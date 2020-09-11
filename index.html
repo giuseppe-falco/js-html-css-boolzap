@@ -28,9 +28,12 @@
             <!-- start sezione chat recenti -->
             <section id="list-chat-section">
                 <!-- barra titolo con option -->
-                <div class="title row">
+                <div class="title row" data-contact="0">
                     <div class="avatar">
                         <img src="img/avatar_io.jpg" alt="propic">
+                    </div>
+                    <div class="row-text">
+                        <h4 class="d-none">Messaggi Salvati</h4>
                     </div>
                     <div class="icons">
                         <i class="fas fa-circle-notch"></i>
@@ -183,7 +186,8 @@
                         </div>
                         <div class="name">
                             <h3 class="avatar-name">Michele</h3>
-                            <p class="avatar-last-access">Ultimo accesso oggi alle <time>15:30</time></p>
+                            <p class="avatar-last-access">Ultimo accesso oggi alle </p>
+                            <time id="last-access">15:30</time>
                         </div>
                     </div>
                     <div class="icons">
@@ -255,6 +259,8 @@
                             </div> 
                         </div>
                     </div> -->
+                    <div class="chat" data-conversation="0">
+                    </div>
                     <div class="chat active" data-conversation="1">
                     </div>
                     <div class="chat" data-conversation="2">

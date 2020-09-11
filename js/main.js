@@ -2,6 +2,11 @@
 // script
 
 $(document).ready(function ciao () {
+   
+    //dichiaro dataContact per cambio orario
+    dataContact = 1;
+   
+
     //invio messaggio
     $("#input-send").click(sendMessage);
 
@@ -26,11 +31,7 @@ $(document).ready(function ciao () {
             }
         });
     });
-
-
- 
-    
-    
+   
     
 
     //mostra opzioni messaggio
@@ -53,7 +54,7 @@ $(document).ready(function ciao () {
             $(".row").removeClass("active-chat");
             $(this).addClass("active-chat");
 
-            var dataContact = $(this).attr("data-contact");
+            dataContact = $(this).attr("data-contact");
 
             $(".row").removeClass("active-chat");
             $(".row[data-contact=" + dataContact + "]").addClass("active-chat");
@@ -68,7 +69,7 @@ $(document).ready(function ciao () {
 
             $(".message-name .avatar img").attr("src", img);
             $(".message-name .avatar-name").text(name);
-            $(".message-name .avatar-last-access time").text(time);
+            $(".message-name .name time").text(time);
 
         }
     );
@@ -157,9 +158,12 @@ var risposte = [
 
     //risposta automatica
     function getReply() {
+        var timeToReply = Math.floor(Math.random()*1000 + 500);
+        
         //aggiorno stato in sta scerivendo
         var status = $(".message-name .name p").text();
         $(".message-name .name p").text("Sta scrivendo...");
+        $(".message-name .name time").hide();
         setTimeout(function(){
             //clono div messaggio completo
             var templateSend = $(".row-message.send.message-template").clone();
@@ -170,17 +174,23 @@ var risposte = [
                 var rand = Math.floor(Math.random() * risposte.length);
                 var risposta = risposte[rand];
             templateSend.find("#text-message").text(risposta);
-            //scrivo ora nel messaggio 
+            //scrivo orario nel messaggio 
             templateSend.find(".time-message").text(getTime);
+            //aggiorna orario ultiumo messaggio sezione laterale chat
+            $(".active-chat .contacts-time").text(getTime);
             //aggiunta messaggio in storico chat            
             templateSend.appendTo(".chat.active");
             //reimposto ultimo accesso
+            $(".message-name .name time").show();
             $(".message-name .name p").text(status);
-            
+            $(".message-name .name time").text(getTime);
+            //aggiorno messaggio chat laterale
+            $(".row[data-contact=" + dataContact + "] p").text(risposta);
+
             var heightChatActive = $(".chat.active").prop("scrollHeight");
             $(".message-history").scrollTop(heightChatActive);
 
-        },1000);
+        },timeToReply);
     };
         
 

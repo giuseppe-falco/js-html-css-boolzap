@@ -233,10 +233,12 @@
     font-weight: 500;
 }
 
-.message-name p{
+.message-name p, .message-name time{
     color: #b1b1b1;
     font-size: 12px;
     font-weight: 500;
+
+    display: inline-block;
 }
 
 .message-name .icons i{
