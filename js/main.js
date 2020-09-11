@@ -5,11 +5,11 @@ $(document).ready(function ciao () {
     //invio messaggio
     $("#input-send").click(sendMessage);
 
-        $("#input-chat").keyup(function(e) {
-            if (e.which == 13 && $("#input-chat").val() != "") {
-                sendMessage();
-            }
-        });
+    $("#input-chat").keyup(function(e) {
+        if (e.which == 13 && $("#input-chat").val() != "") {
+            sendMessage();
+        }
+    });
 
     //ricerca contatti
     //interamente copiato da w3school
@@ -26,8 +26,62 @@ $(document).ready(function ciao () {
             }
         });
     });
+
+
+ 
+    
+    
+    
+
+    //mostra opzioni messaggio
+    $(document).on("click",".option-message",
+        function() {
+            $(this).siblings(".option-menu").toggle();
+        }
+    );
+     
+    //cancella messaggio
+    $(document).on("click",".delete-message",
+        function() {
+            $(this).parents(".row-message").remove();
+        }
+    );
+    
+    //click active chat
+    $(".row").click(
+        function() {
+            $(".row").removeClass("active-chat");
+            $(this).addClass("active-chat");
+
+            var dataContact = $(this).attr("data-contact");
+
+            $(".row").removeClass("active-chat");
+            $(".row[data-contact=" + dataContact + "]").addClass("active-chat");
+            $(".chat").removeClass("active");
+            $(".chat[data-conversation=" + dataContact + "]").addClass("active");
+
+
+            var img = $(this).find("img").attr("src");
+            var name = $(this).find(".contacts-name").text();
+            var time = $(this).find(".contacts-time").text();
+            
+
+            $(".message-name .avatar img").attr("src", img);
+            $(".message-name .avatar-name").text(name);
+            $(".message-name .avatar-last-access time").text(time);
+
+        }
+    );
+        
+        
 });
-   
+
+
+
+
+
+
+
 
 
 
@@ -53,17 +107,17 @@ var risposte = [
     "Ok",
     "Certo",
     "Bene",
-    "Capito",
+    "Sono d'accordo",
     "Ciao!",
     "Molto bene",
+    "Capito",
     "Benissimo",
+    "A dopo",
     "Sì, tranquillo",
-    "Grande!",
     "Sicuramente",
-    "Sono d'accordo",
     "Stai scherzando?",
-    "Ci sentiamo più tardi, ok?"
-  ];
+    "Grande!",
+];
 
 
 
@@ -85,14 +139,20 @@ var risposte = [
             //scrivo testo input nel messaggio vuoto
             templateSend.find("#text-message").text(inputMessage);
             //scrivo ora nel messaggio 
-            templateSend.find("#time-message").text(getTime);
+            templateSend.find(".time-message").text(getTime);
             //aggiunta messaggio in storico chat            
-            templateSend.appendTo(".message-history");
+            templateSend.appendTo(".chat.active");
             // svuoto campo input per prossimo messaggio
             $("#input-chat").val("");
 
             getReply();
-         }
+
+        };
+
+        var heightChatActive = $(".chat.active").prop("scrollHeight");
+        $(".message-history").scrollTop(heightChatActive);
+ 
+     
     };
 
     //risposta automatica
@@ -111,15 +171,19 @@ var risposte = [
                 var risposta = risposte[rand];
             templateSend.find("#text-message").text(risposta);
             //scrivo ora nel messaggio 
-            templateSend.find("#time-message").text(getTime);
+            templateSend.find(".time-message").text(getTime);
             //aggiunta messaggio in storico chat            
-            templateSend.appendTo(".message-history");
+            templateSend.appendTo(".chat.active");
             //reimposto ultimo accesso
             $(".message-name .name p").text(status);
-      
+            
+            var heightChatActive = $(".chat.active").prop("scrollHeight");
+            $(".message-history").scrollTop(heightChatActive);
+
         },1000);
     };
         
+
     //funzione tempo
     function getTime() {
         var date = new Date();

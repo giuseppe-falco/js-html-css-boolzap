@@ -18,7 +18,7 @@
 }
 /* /background color */
 /* general */
-.row.active{
+.row.active-chat{
     background-color: #E9EBEB;
 }
 
@@ -40,15 +40,6 @@
     display:flex;
 }
 
-@media screen and (max-width:800px) {
-    .container{
-        width:100vw;
-        height: 100vh;
-        top:0;
-        left:0;
-    }
-}
-
 #list-chat-section{
     width:34%;
     height: 100%;
@@ -60,6 +51,24 @@
     background-color: lightcyan;
     background-image: url(../img/mine.jpg);
 }
+
+@media screen and (max-width:800px) {
+    .container{
+        width:100vw;
+        height: 100vh;
+        top:0;
+        left:0;
+    }
+
+    #list-chat-section{
+        width:45%;
+    }
+
+    #chat-section{
+        width:55%;
+    }
+}
+
 /* /container */
 /* sezione chat recenti */
 .row{
@@ -70,6 +79,7 @@
     display: flex;
     align-items: center;
     background-color: #fff;
+    cursor:pointer;
 
     position: relative;
 }
@@ -184,6 +194,13 @@
 /* /contacts row */
 /* /sezione chat recenti */
 /* sezione chat corrente */
+    .chat {
+        display: none;
+    }
+
+    .active{
+        display: block;
+    }
 /* nome chat */
 .message-name{
     height: 60px;
@@ -233,6 +250,7 @@
     padding:0 20px;
 
     overflow-y: auto;
+    display: inline-block;
 }
 
 .send{
@@ -252,13 +270,13 @@
 }
 
 .message{
-    padding: 10px;
+    padding: 15px;
+    padding-right:30px;
     background-color: #fff;
     border-radius: 10px;
     text-align:left;
     
     min-height: 45px;
-    word-break: break-all;
 
     min-width: 50px;
     max-width: 100%;
@@ -271,7 +289,7 @@
 .send .message{
     background-color: #D5F9BA;
     margin-left:auto;   
- }
+}
 
 
 .message{
@@ -279,7 +297,8 @@
     font-size: 14px;
 }  
 
-.message span{
+/* orario messaggio */
+.message span:first-of-type {
     position: absolute;
     bottom:5px;
     right:10px;
@@ -288,13 +307,57 @@
     font-size:8px;
 }
 
+/* angolo opzioni messaggio*/
+.option-message {
+    color:#b1b1b1;
+    font-size:14px;
+    margin-left:5px;
 
+    position:absolute;
+    top:10px;
+    right:15px;
+    
+    display: none;
+}
+/* menu opzioni messaggio */
+.option-menu{
+    background-color: #fff;
+    padding: 10px;
+    border-radius:2px;
+    width: max-content;
+    text-align: justify;
+    list-style: none;
 
+    font-weight: 400;
+    z-index:1;
 
+    position:absolute;
+    left:5px;
+    top:calc(100% + 2px);
 
+    display: none;
+}
 
+.send .message .option-menu{
+    left:auto;
+    right:5px;
+}
 
+.message:hover .option-message{
+    display: block;
+}
+.option-menu{
+    right:20px;
+}
 
+.option-menu li:first-child{
+    /* border-bottom:1px solid grey */
+    margin-bottom:10px;
+}
+
+.option-menu li{
+    cursor:pointer;
+}
 
 
 /* /storico messaggi */
