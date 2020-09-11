@@ -164,6 +164,9 @@ var risposte = [
         var status = $(".message-name .name p").text();
         $(".message-name .name p").text("Sta scrivendo...");
         $(".message-name .name time").hide();
+        //salvo numero chat corrente
+        var indexChat = $(".chat.active").index() + 1;
+        //dopo tempo casuale maggiore di 0.5 sec
         setTimeout(function(){
             //clono div messaggio completo
             var templateSend = $(".row-message.send.message-template").clone();
@@ -179,13 +182,15 @@ var risposte = [
             //aggiorna orario ultiumo messaggio sezione laterale chat
             $(".active-chat .contacts-time").text(getTime);
             //aggiunta messaggio in storico chat            
-            templateSend.appendTo(".chat.active");
+                // templateSend.appendTo(".chat.active");
+            $(".chat").eq(indexChat).append(templateSend);
             //reimposto ultimo accesso
             $(".message-name .name time").show();
             $(".message-name .name p").text(status);
             $(".message-name .name time").text(getTime);
             //aggiorno messaggio chat laterale
-            $(".row[data-contact=" + dataContact + "] p").text(risposta);
+                // $(".row[data-contact=" + dataContact + "] p").text(risposta);
+            $(".row .row-text p").eq(indexChat-1).text(risposta);
 
             var heightChatActive = $(".chat.active").prop("scrollHeight");
             $(".message-history").scrollTop(heightChatActive);
