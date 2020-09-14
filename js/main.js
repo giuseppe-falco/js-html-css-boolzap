@@ -155,8 +155,9 @@ var risposte = [
             }
         },timeToReply);
     };      
-
+    //funzione invio risposta automatica
     function sendReply() {
+        var audio = new Audio("file_musicale.mp3");
         //clono div messaggio completo
         var templateSend = $(".row-message.send.message-template").clone();
         //rimuovo classe templeate e send
@@ -180,6 +181,7 @@ var risposte = [
         var heightChatActive = $(".chat.active").prop("scrollHeight");
         $(".message-history").scrollTop(heightChatActive);
 
+        sound()
     }
     //funzione tempo
     function getTime() {
@@ -197,4 +199,7 @@ var risposte = [
         return currentTime;
     };
 
- 
+function sound () {
+    var audio = new Audio("../file/piece-of-cake.mp3");
+    audio.play();
+}
