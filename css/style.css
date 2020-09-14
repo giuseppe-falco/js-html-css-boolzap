@@ -16,6 +16,10 @@
     height: 84vh;
     background-color: #D8DBD5;
 }
+
+.color-b1{
+    color:#B1B1B1;
+}
 /* /background color */
 /* general */
 .row.active-chat{
@@ -108,7 +112,6 @@
 }
 
 .icons i{
-    color:#B1B1B1;
     margin-right:20px;
     font-size:20px;
     margin-top:5px
@@ -234,7 +237,6 @@
 }
 
 .message-name p, .message-name time{
-    color: #b1b1b1;
     font-size: 12px;
     font-weight: 500;
 
@@ -311,7 +313,6 @@
 
 /* angolo opzioni messaggio*/
 .option-message {
-    color:#b1b1b1;
     font-size:14px;
     margin-left:5px;
 
@@ -385,7 +386,6 @@
 }
 
 .message-bar i{
-    color:#B1B1B1;
     font-size: 18px;
     cursor:pointer;
 }
