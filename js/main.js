@@ -5,12 +5,14 @@ $(document).ready(function ciao () {
    
     //dichiaro dataContact per cambio orario
     dataContact = 1;
-   
 
+    indexChatEnd = $(".chat.active").index() + 1;
+
+   
     //invio messaggio
     $("#input-send").click(sendMessage);
 
-    $("#input-chat").keyup(function(e) {
+    $("#input-chat").keydown(function(e) {
         if (e.which == 13 && $("#input-chat").val() != "") {
             sendMessage();
         }
@@ -31,9 +33,7 @@ $(document).ready(function ciao () {
             }
         });
     });
-   
-    
-
+     
     //mostra opzioni messaggio
     $(document).on("click",".option-message",
         function() {
@@ -69,39 +69,15 @@ $(document).ready(function ciao () {
 
             $(".message-name .avatar img").attr("src", img);
             $(".message-name .avatar-name").text(name);
-            $(".message-name .name time").text(time);
+            $(".message-name .name time").text(time);          
+
+
+            indexChatEnd = $(".chat.active").index() + 1;
 
         }
-    );
-        
-        
+    );       
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//array risposte casuali
+//**************************************array risposte casuali***********************************//
 var risposte = [
     "Sei un grande!",
     "Ottima idea",
@@ -119,17 +95,11 @@ var risposte = [
     "Stai scherzando?",
     "Grande!",
 ];
-
-
-
-
-
-
-
-
-///////////funzioni/////////
+//***************************************funzioni****************************************************//
     //funzione invio messaggio
     function sendMessage() {
+        indexChatStart = $(".chat.active").index() + 1;
+
         //messaggio screitto dall'utente
         var inputMessage = $("#input-chat").val();
         if (inputMessage != "" && inputMessage != " ") {
@@ -149,56 +119,68 @@ var risposte = [
             getReply();
 
         };
-
         var heightChatActive = $(".chat.active").prop("scrollHeight");
-        $(".message-history").scrollTop(heightChatActive);
- 
-     
+        $(".message-history").scrollTop(heightChatActive);     
     };
-
     //risposta automatica
     function getReply() {
-        var timeToReply = Math.floor(Math.random()*1000 + 500);
-        
-        //aggiorno stato in sta scerivendo
-        var status = $(".message-name .name p").text();
-        $(".message-name .name p").text("Sta scrivendo...");
-        $(".message-name .name time").hide();
+        //tempo casuale per la risposta
+        timeToReply = Math.floor(Math.random()*1000 + 500);      
+        //salvo testo ultimo accesso 
+        status = $(".message-name .name p").text();
+             // $(".message-name .name p").text("Sta scrivendo...");
         //salvo numero chat corrente
-        var indexChat = $(".chat.active").index() + 1;
+        indexChatList = $(".row.active-chat").index();
+             
         //dopo tempo casuale maggiore di 0.5 sec
         setTimeout(function(){
-            //clono div messaggio completo
-            var templateSend = $(".row-message.send.message-template").clone();
-            //rimuovo classe templeate e send
-            templateSend.removeClass("message-template send");
-                
-            //scrivo testo casuale nel messaggio vuoto
-                var rand = Math.floor(Math.random() * risposte.length);
-                var risposta = risposte[rand];
-            templateSend.find("#text-message").text(risposta);
-            //scrivo orario nel messaggio 
-            templateSend.find(".time-message").text(getTime);
-            //aggiorna orario ultiumo messaggio sezione laterale chat
-            $(".active-chat .contacts-time").text(getTime);
-            //aggiunta messaggio in storico chat            
-                // templateSend.appendTo(".chat.active");
-            $(".chat").eq(indexChat).append(templateSend);
-            //reimposto ultimo accesso
-            $(".message-name .name time").show();
-            $(".message-name .name p").text(status);
-            $(".message-name .name time").text(getTime);
-            //aggiorno messaggio chat laterale
-                // $(".row[data-contact=" + dataContact + "] p").text(risposta);
-            $(".row .row-text p").eq(indexChat-1).text(risposta);
-
-            var heightChatActive = $(".chat.active").prop("scrollHeight");
-            $(".message-history").scrollTop(heightChatActive);
-
+            //se sono nella stess ìa chat esce scritta sta scrivendo e poi ultimo accesso
+            //se cambio chat prima che il messaggio venga stampato non succede nulla
+            if (indexChatEnd != indexChatStart) {
+                console.log('duversi');
+                $(".message-name .name p").text(status);
+                $(".message-name .name time").show();
+                $(".message-name .name time").text();
+                sendReply();
+            }  else {
+                console.log('uguale');
+                $(".message-name .name time").hide();
+                $(".message-name .name p").text("Sta scrivendo...");
+                setTimeout(function(){
+                    sendReply();
+                    $(".message-name .name p").text(status);
+                    $(".message-name .name time").show();
+                    $(".message-name .name time").text(getTime);
+                },timeToReply);
+            }
         },timeToReply);
-    };
-        
+    };      
 
+    function sendReply() {
+        //clono div messaggio completo
+        var templateSend = $(".row-message.send.message-template").clone();
+        //rimuovo classe templeate e send
+        templateSend.removeClass("message-template send");                
+        //scrivo testo casuale nel messaggio vuoto
+            var rand = Math.floor(Math.random() * risposte.length);
+            var risposta = risposte[rand];
+        templateSend.find("#text-message").text(risposta);
+        //scrivo orario nel messaggio 
+        templateSend.find(".time-message").text(getTime);
+        //aggiorna orario ultiumo messaggio sezione laterale chat
+            // $(".active-chat .contacts-time").text(getTime);
+        $(".contacts-time").eq(indexChatList).text(getTime);
+        //aggiunta messaggio in storico chat            
+            // templateSend.appendTo(".chat.active");
+        $(".chat").eq(indexChatStart).append(templateSend);
+        //aggiorno messaggio chat laterale
+            // $(".row[data-contact=" + dataContact + "] p").text(risposta);
+        $(".row .row-text p").eq(indexChatStart-1).text(risposta);
+        //scroll automatico
+        var heightChatActive = $(".chat.active").prop("scrollHeight");
+        $(".message-history").scrollTop(heightChatActive);
+
+    }
     //funzione tempo
     function getTime() {
         var date = new Date();
@@ -211,7 +193,7 @@ var risposte = [
             hours = "0" + hours;
             }
         var currentTime = hours + ":" + minutes;
-    
+   
         return currentTime;
     };
 
